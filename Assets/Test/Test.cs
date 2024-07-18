@@ -1,33 +1,48 @@
-﻿using Core.Asset;
-using Core.Management;
-using Unity.VisualScripting;
+﻿using System.Linq;
+using Core.Data;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using Object = UnityEngine.Object;
 
-public class Test : MonoBehaviour
+namespace Test
 {
-  public AssetReference ar;
-
-  public Object ov;
-  private void Update()
+  public class TestData
   {
-    if (Input.GetKeyDown(KeyCode.Alpha1))
+    public string name { get; set; }
+    public int age { get; set; }
+    public string gender { get; set; }
+  }
+  
+  public class Test : MonoBehaviour
+  {
+    // public AssetReference ar;
+    //
+    // public Object ov;
+    // private void Update()
+    // {
+    //   if (Input.GetKeyDown(KeyCode.Alpha1))
+    //   {
+    //     "TEST".LoadAsset(x => {
+    //       Instantiate(x);
+    //       ov = x;
+    //     });
+    //   }
+    //   else if (Input.GetKeyDown(KeyCode.Alpha2))
+    //   {
+    //     ar.Load(x => {
+    //      Instantiate(x);
+    //       ov = x;
+    //     });
+    //   } else if (Input.GetKeyDown(KeyCode.Alpha3))
+    //   {
+    //     Addressables.Release(ov.GameObject());
+    //   }
+    // }
+    private void Start()
     {
-      "TEST".LoadAsset(x => {
-        Instantiate(x);
-        ov = x;
-      });
-    }
-    else if (Input.GetKeyDown(KeyCode.Alpha2))
-    {
-      ar.Load(x => {
-       Instantiate(x);
-        ov = x;
-      });
-    } else if (Input.GetKeyDown(KeyCode.Alpha3))
-    {
-      Addressables.Release(ov.GameObject());
+      var x = DataMgr.FromCsv<TestData>("./Data/test.csv");
+      foreach (var testData in x.ToList())
+      {
+        Debug.Log($"{testData.name} : {testData.age}살, {testData.gender}성");
+      }
     }
   }
 }
