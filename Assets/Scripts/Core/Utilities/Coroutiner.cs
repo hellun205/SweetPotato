@@ -19,13 +19,13 @@ namespace Core.Utilities
     public void Start()
     {
       Stop();
-      current = ManagementCore.StartCoroutine(routine.Invoke());
+      current = Manager.StartCoroutine(routine.Invoke());
     }
 
     public void Stop()
     {
       if (current is not null)
-        ManagementCore.StopCoroutine(current);
+        Manager.StopCoroutine(current);
     }
   }
 

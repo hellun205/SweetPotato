@@ -9,10 +9,17 @@ namespace Core.Management
     public Action onFixedUpdate;
     public Action onDestroy;
     public Action onUpdate;
-
+    
     private void Awake()
     {
       DontDestroyOnLoad(this);
+      Manager.globalManagementObject = this;
+      Manager.isReady = true;
+      while (Manager.initFuncQueue.TryDequeue(out var func))
+      {
+        func.Invoke();
+      }
+      Manager.initFuncQueue = null;
     }
 
     private void OnDestroy()
