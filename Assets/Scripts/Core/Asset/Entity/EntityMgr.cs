@@ -1,4 +1,4 @@
-﻿namespace Core.Entity
+﻿namespace Core.Asset.Entity
 {
   public static class EntityMgr
   {
