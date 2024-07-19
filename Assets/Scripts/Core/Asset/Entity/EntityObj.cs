@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Core.Asset.Entity
 {
-  public class Entity : MonoBehaviour
+  public class EntityObj : MonoBehaviour
   {
     public delegate void EntityEventListener();
 
@@ -26,6 +26,7 @@ namespace Core.Asset.Entity
 
       foreach (var component in components)
       {
+        // ReSharper disable once SuspiciousTypeConversion.Global
         var callbackReceiver = component as IEntityCallbackReceiver;
         onGet += () => callbackReceiver!.OnSummon();
         onRelease += callbackReceiver!.OnKilled;

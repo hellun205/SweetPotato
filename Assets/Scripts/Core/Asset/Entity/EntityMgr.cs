@@ -18,7 +18,7 @@ namespace Core.Asset.Entity
     public static Transform uiEntityParent;
     private static Vector2 _tmpPos;
 
-    private static Dictionary<string, Utilities.ObjectPool<Entity>> _pools = new Dictionary<string, Utilities.ObjectPool<Entity>>();
+    private static Dictionary<string, Utilities.ObjectPool<EntityObj>> _pools = new Dictionary<string, Utilities.ObjectPool<EntityObj>>();
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     private static void Init()
@@ -34,6 +34,8 @@ namespace Core.Asset.Entity
       foreach (var (name, pool) in _pools)
         pool.Clear();
       _pools.Clear();
+
+      Resources.UnloadUnusedAssets();
 
       if (entityParent == null)
       {
@@ -55,33 +57,33 @@ namespace Core.Asset.Entity
       }
     }
 
-    public static async Task<Entity> Summon(string assetAddress, Vector2 position)
+    public static async Task<EntityObj> Summon(string assetAddress, Vector2 position)
     {
       if (!_pools.ContainsKey(assetAddress))
       {
-        _pools.Add(assetAddress, new Utilities.ObjectPool<Entity>(() => CreateFunc(assetAddress), ActionOnGet, ActionOnRelease, ActionOnDestroy));
+        _pools.Add(assetAddress, new Utilities.ObjectPool<EntityObj>(() => CreateFunc(assetAddress), ActionOnGet, ActionOnRelease, ActionOnDestroy));
       }
       return await _pools[assetAddress].Get();
     }
 
-    public static void Kill(Entity entity)
+    public static void Kill(EntityObj entity)
     {
       _pools[entity.type].Release(entity);
     }
     #region PoolEvents
 
-    private static void ActionOnDestroy(Entity obj)
+    private static void ActionOnDestroy(EntityObj obj)
     {
       Object.Destroy(obj.gameObject);
     }
 
-    private static void ActionOnRelease(Entity obj)
+    private static void ActionOnRelease(EntityObj obj)
     {
       obj.gameObject.SetActive(false);
       obj.onRelease?.Invoke();
     }
 
-    private static void ActionOnGet(Entity obj)
+    private static void ActionOnGet(EntityObj obj)
     {
       obj.position = _tmpPos;
       obj.name = $"{obj.type}";
@@ -89,10 +91,10 @@ namespace Core.Asset.Entity
       obj.gameObject.SetActive(true);
     }
 
-    private static async Task<Entity> CreateFunc(string address)
+    private static async Task<EntityObj> CreateFunc(string address)
     {
       var asset = await address.LoadAssetAsync();
-      var obj = Object.Instantiate(asset, asset.GetComponent<Entity>() is UIEntity ? uiEntityParent : entityParent).GetComponent<Entity>();
+      var obj = Object.Instantiate(asset, asset.GetComponent<EntityObj>() is UIEntityObj ? uiEntityParent : entityParent).GetComponent<EntityObj>();
       obj.type = address;
       return obj;
     }

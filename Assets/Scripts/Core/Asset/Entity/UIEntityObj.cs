@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Core.Asset.Entity
 {
-  public abstract class UIEntity : Entity
+  public abstract class UIEntityObj : EntityObj
   {
     private Vector2 _position;
     public override Vector2 position {

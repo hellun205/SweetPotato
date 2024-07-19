@@ -47,7 +47,7 @@ namespace Test
       // }
     }
     public string assetAddr;
-    public List<Entity> ls = new List<Entity>();
+    public List<EntityObj> ls = new List<EntityObj>();
     private async void Update()
     {
       if (Input.GetKeyDown(KeyCode.Alpha1))

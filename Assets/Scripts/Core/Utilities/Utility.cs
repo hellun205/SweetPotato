@@ -251,6 +251,17 @@ namespace Core.Utilities
       return res.ToArray();
     }
     
+    public static bool CheckLayer(this int layer, params string[] checks)
+      => checks.Any(check => layer == LayerMask.NameToLayer(check));
+
+    public static string[] GetNames<T>() where T : Enum
+    {
+      return Enum.GetNames(typeof(T));
+    }
     
+    public static T[] GetValues<T>() where T : Enum
+    {
+      return Enum.GetValues(typeof(T)).Cast<T>().ToArray();
+    }
   }
 }
