@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Threading.Tasks;
 using Core.Management;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -50,5 +51,15 @@ namespace Core.Asset
 
     public static void LoadAsset<T>(this string assetAddress, Action<T> callback = null) where T : Object
       => Manager.StartCoroutine(LoadAssetRoutine(assetAddress, callback));
+
+    public static async Task<Object> LoadAssetAsync(this string assetAddress) 
+      => await LoadAssetAsync<Object>(assetAddress);
+
+    public static async Task<T> LoadAssetAsync<T>(this string assetAddress) where T : Object
+    {
+      var req = Addressables.LoadAssetAsync<T>(assetAddress);
+      await req.Task;
+      return req.Result;
+    }
   }
 }

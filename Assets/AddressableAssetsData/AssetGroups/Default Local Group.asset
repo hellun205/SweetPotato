@@ -15,11 +15,10 @@ MonoBehaviour:
   m_GroupName: Default Local Group
   m_GUID: dfb1d02c5ebd5d6449f8eeee9cb79ce2
   m_SerializeEntries:
-  - m_GUID: 230a57aa9c131ab42b2aca69ec9741a0
-    m_Address: TEST
+  - m_GUID: 967fdb9c22dfe684b8601bbdd169926c
+    m_Address: test
     m_ReadOnly: 0
-    m_SerializedLabels:
-    - default
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: bd03bc3f94401fb41b51744ca13028eb, type: 2}
