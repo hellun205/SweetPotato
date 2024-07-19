@@ -58,16 +58,16 @@ namespace Core.Utilities
       return screenPoint;
     }
 
-    // public static Vector3 WorldToCanvasPosition(this Canvas canvas, Vector3 worldPosition, Camera camera = null)
-    // {
-    //   if (camera == null)
-    //   {
-    //     camera = GameManager.Camera.camera;
-    //   }
-    //
-    //   var viewportPosition = camera.WorldToViewportPoint(worldPosition);
-    //   return canvas.ViewportToCanvasPosition(viewportPosition);
-    // }
+    public static Vector3 WorldToCanvasPosition(this Canvas canvas, Vector3 worldPosition, Camera camera = null)
+    {
+      if (camera == null)
+      {
+        camera = Camera.main;
+      }
+    
+      var viewportPosition = camera.WorldToViewportPoint(worldPosition);
+      return canvas.ViewportToCanvasPosition(viewportPosition);
+    }
 
     public static Vector3 ScreenToCanvasPosition(this Canvas canvas, Vector3 screenPosition)
     {
@@ -250,5 +250,7 @@ namespace Core.Utilities
         res.Add(transform.GetChild(i).GetComponent<T>());
       return res.ToArray();
     }
+    
+    
   }
 }

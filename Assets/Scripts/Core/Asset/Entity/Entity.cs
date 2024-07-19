@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 
 namespace Core.Asset.Entity
 {
-  public abstract class Entity : MonoBehaviour
+  public class Entity : MonoBehaviour
   {
     public delegate void EntityEventListener();
 
@@ -14,6 +15,21 @@ namespace Core.Asset.Entity
     public virtual Vector2 position {
       get => transform.position;
       set => transform.position = value;
+    }
+
+    public void Release() => EntityMgr.Kill(this);
+
+    private void Awake()
+    {
+      var components = GetComponents(typeof(IEntityCallbackReceiver));
+      if (!components.Any()) return;
+
+      foreach (var component in components)
+      {
+        var callbackReceiver = component as IEntityCallbackReceiver;
+        onGet += () => callbackReceiver!.OnSummon();
+        onRelease += callbackReceiver!.OnKilled;
+      }
     }
   }
 }

@@ -14,8 +14,8 @@ namespace Core.Asset.Entity
 {
   public static class EntityMgr
   {
-    private static Transform _entityParent;
-    private static Transform _uiEntityParent;
+    public static Transform entityParent;
+    public static Transform uiEntityParent;
     private static Vector2 _tmpPos;
 
     private static Dictionary<string, Utilities.ObjectPool<Entity>> _pools = new Dictionary<string, Utilities.ObjectPool<Entity>>();
@@ -35,16 +35,16 @@ namespace Core.Asset.Entity
         pool.Clear();
       _pools.Clear();
 
-      if (_entityParent == null)
+      if (entityParent == null)
       {
-        _entityParent = new GameObject("[Entities]").transform;
+        entityParent = new GameObject("[Entities]").transform;
       }
 
-      if (_uiEntityParent == null)
+      if (uiEntityParent == null)
       {
-        _uiEntityParent = new GameObject("[Entities(UI)]", typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster)).transform;
-        var cv = _uiEntityParent.GetComponent<Canvas>();
-        var rt = _uiEntityParent.GetComponent<RectTransform>();
+        uiEntityParent = new GameObject("[Entities(UI)]", typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster)).transform;
+        var cv = uiEntityParent.GetComponent<Canvas>();
+        var rt = uiEntityParent.GetComponent<RectTransform>();
         cv.renderMode = RenderMode.WorldSpace;
         cv.vertexColorAlwaysGammaSpace = true;
         rt.localPosition = Vector3.zero;
@@ -92,7 +92,7 @@ namespace Core.Asset.Entity
     private static async Task<Entity> CreateFunc(string address)
     {
       var asset = await address.LoadAssetAsync();
-      var obj = Object.Instantiate(asset, asset.GetComponent<Entity>() is UIEntity ? _uiEntityParent : _entityParent).GetComponent<Entity>();
+      var obj = Object.Instantiate(asset, asset.GetComponent<Entity>() is UIEntity ? uiEntityParent : entityParent).GetComponent<Entity>();
       obj.type = address;
       return obj;
     }
