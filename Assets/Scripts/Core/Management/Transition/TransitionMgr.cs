@@ -8,7 +8,7 @@ namespace Core.Management.Transition
     public static void Init()
     {
       Manager.CallInit(() => {
-        
+        // todo
       });
     }
     
